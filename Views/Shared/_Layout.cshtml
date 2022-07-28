@@ -1,69 +1,362 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<!-- Mirrored from preview.colorlib.com/theme/realestate2/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 19 Jul 2022 10:57:26 GMT -->
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Zillow</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Zillow.styles.css" asp-append-version="true" />
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>@ViewData["Title"] - Zillow</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="shortcut icon" type="image/x-icon" href="~/img/xfavicon.png.pagespeed.ic.xjuSQ5i6l5.png">
+	<link rel="stylesheet" href="~/css/bootstrap.min.css%2bowl.carousel.min.css%2bmagnific-popup.css%2bfont-awesome.min.css%2bthemify-icons.css%2bnice-select.css%2bflaticon.css%2bgijgo.css%2banimate.css%2bslick.css%2bslicknav.css" />
+	<link rel="stylesheet" href="~/../../../ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="~/css/A.style.css.pagespeed.cf.D2wU09WNeF.css">
+	<link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+
+	<script nonce="1ad5bb18-4001-4d93-81f7-b1ec06d3c88c">(function(w, d) { !function(a, e, t, r) { a.zarazData = a.zarazData || {}; a.zarazData.executed = []; a.zaraz = { deferred: [] }; a.zaraz.q = []; a.zaraz._f = function(e) { return function() { var t = Array.prototype.slice.call(arguments); a.zaraz.q.push({ m: e, a: t }) } }; for (const e of ["track", "set", "ecommerce", "debug"]) a.zaraz[e] = a.zaraz._f(e); a.zaraz.init = () => { var t = e.getElementsByTagName(r)[0], z = e.createElement(r), n = e.getElementsByTagName("title")[0]; n && (a.zarazData.t = e.getElementsByTagName("title")[0].text); a.zarazData.x = Math.random(); a.zarazData.w = a.screen.width; a.zarazData.h = a.screen.height; a.zarazData.j = a.innerHeight; a.zarazData.e = a.innerWidth; a.zarazData.l = a.location.href; a.zarazData.r = e.referrer; a.zarazData.k = a.screen.colorDepth; a.zarazData.n = e.characterSet; a.zarazData.o = (new Date).getTimezoneOffset(); a.zarazData.q = []; for (; a.zaraz.q.length;) { const e = a.zaraz.q.shift(); a.zarazData.q.push(e) } z.defer = !0; for (const e of [localStorage, sessionStorage]) Object.keys(e || {}).filter((a => a.startsWith("_zaraz_"))).forEach((t => { try { a.zarazData["z_" + t.slice(7)] = JSON.parse(e.getItem(t)) } catch { a.zarazData["z_" + t.slice(7)] = e.getItem(t) } })); z.referrerPolicy = "origin"; z.src = "~/cdn-cgi/zaraz/sd0d9.js?z=" + btoa(encodeURIComponent(JSON.stringify(a.zarazData))); t.parentNode.insertBefore(z, t) };["complete", "interactive"].includes(e.readyState) ? zaraz.init() : a.addEventListener("DOMContentLoaded", zaraz.init) }(w, d, 0, "script"); })(window, document);</script>
+
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Zillow</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="RealEstates" asp-action="Index">RealEstates</a>
-                        </li>
-                        <li cl
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Addresses" asp-action="Index">Addresses</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Customers" asp-action="Index">Customers</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Contracts" asp-action="Index">Contracts</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Images" asp-action="Index">Images</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+	<header>
+		<div class="header-area ">
+			<div class="header-top_area d-none d-lg-block">
+				<div class="container">
+					<div class="row">
+						<div class="col-xl-5 col-md-5 ">
+							<div class="header_left">
+								<p>Welcome to Zillow consulting service</p>
+							</div>
+						</div>
+						<div class="col-xl-7 col-md-7">
+							<div class="header_right d-flex">
+								<div class="short_contact_list">
+									<ul>
+										<li><a href="#"> <i class="fa fa-envelope"></i> contact@zillow.ps</a></li>
+										<li><a href="#"> <i class="fa fa-phone"></i> 1601-609 6780</a></li>
+									</ul>
+								</div>
+								<div class="social_media_links">
+									<a href="https://github.com/Duccs">
+										<i class="fa fa-linkedin"></i>
+									</a>
+									<a href="https://github.com/Duccs">
+										<i class="fa fa-facebook"></i>
+									</a>
+									<a href="https://github.com/Duccs">
+										<i class="fa fa-google-plus"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="sticky-header" class="main-header-area">
+				<div class="container">
+					<div class="header_bottom_border">
+						<div class="row align-items-center">
+							<div class="col-xl-3 col-lg-2">
+								<div class="logo">
+									<a asp-controller="Home" asp-action="Index">
+										<h2 style="Color:white">Zillow<span style="color:darkorange; font-size:larger;">.</span></h2>
+									</a>
+								</div>
+							</div>
+							<div class="col-xl-6 col-lg-7">
+								<div class="main-menu  d-none d-lg-block">
+									<nav>
+										<ul id="navigation">
+											<li><a class="active" asp-controller="Home" asp-action="Index">home</a></li>
+											<li>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - Zillow - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+												<a href="#">pages <i class="ti-angle-down"></i></a>
+												<ul class="submenu">
+													<li><a asp-controller="Addresses" asp-action="Index">Addresses</a></li>
+													<li><a asp-controller="Categories" asp-action="Index">Categories</a></li>
+													<li><a asp-controller="Customers" asp-action="Index">Customers</a></li>
+													<li><a asp-controller="Images" asp-action="Index">Images</a></li>
+												</ul>
+											</li>
+											<li><a asp-controller="RealEstates" asp-action="Index">Real Estates</a></li>
+											<li>
+
+												<a href="#">blog <i class="ti-angle-down"></i></a>
+												<ul class="submenu">
+													<li><a asp-controller="Contracts" asp-action="Index">Contracts</a></li>
+													<li><a href="single-blog.html">single-blog</a></li>
+												</ul>
+											</li>
+											<li><a href="contact.html">Contact</a></li>
+										</ul>
+									</nav>
+								</div>
+							</div>
+							<div class="col-xl-3 col-lg-3 d-none d-lg-block">
+								<div class="Appointment">
+									<div class="search_btn">
+										<a href="#">
+											<i class="ti-search"></i>
+										</a>
+									</div>
+
+									@if (SignInManager.IsSignedIn(User))
+									{
+										<div class="book_btn d-none d-lg-block" style="margin-right: 3px">
+											<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+										</div>
+										<form  asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+											<div class="book_btn d-none d-lg-block">
+												<button type="submit" class="nav-link text-dark">Logout</button>
+											</div>
+										</form>
+									}
+									else
+									{
+										<div class="book_btn d-none d-lg-block" style="margin-right: 3px">
+											<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+										</div>
+										<div class="book_btn d-none d-lg-block">
+											<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+										</div>
+									}
+									
+								</div>
+							</div>
+							<div class="col-12">
+								<div class="mobile_menu d-block d-lg-none"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<main role="main" class="pb-3">
+		@RenderBody()
+	</main>
+
+	<footer class="footer">
+		<div class="footer_top">
+			<div class="container">
+				<div class="row">
+					<div class="col-xl-3 col-md-6 col-lg-3">
+						<div class="footer_widget">
+							<div class="footer_logo">
+								<a href="#">
+									<img src="~/img/footer_logo.png" alt="">
+								</a>
+							</div>
+							<p>
+								<a href="#"><span class="__cf_email__" data-cfemail="8be8e4e5e9fef8e2cbf8fefbfbe4f9ffa5e8e4e6">[email&#160;protected]</span></a> <br>
+								+10 873 672 6782 <br>
+								600/D, Green road, NewYork
+							</p>
+							<div class="socail_links">
+								<ul>
+									<li>
+										<a href="#">
+											<i class="ti-facebook"></i>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<i class="ti-twitter-alt"></i>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<i class="fa fa-instagram"></i>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-2 col-md-6 col-lg-3">
+						<div class="footer_widget">
+							<h3 class="footer_title">
+								Services
+							</h3>
+							<ul>
+								<li><a href="#">Marketing & SEO</a></li>
+								<li><a href="#"> Startup</a></li>
+								<li><a href="#">Finance solution</a></li>
+								<li><a href="#">Food</a></li>
+								<li><a href="#">Travel</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-xl-2 col-md-6 col-lg-2">
+						<div class="footer_widget">
+							<h3 class="footer_title">
+								Useful Links
+							</h3>
+							<ul>
+								<li><a href="#">About</a></li>
+								<li><a href="#">Blog</a></li>
+								<li><a href="#"> Contact</a></li>
+								<li><a href="#">Appointment</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-xl-4 col-md-6 col-lg-4">
+						<div class="footer_widget">
+							<h3 class="footer_title">
+								Subscribe
+							</h3>
+							<form action="#" class="newsletter_form">
+								<input type="text" placeholder="Enter your mail">
+								<button type="submit">Subscribe</button>
+							</form>
+							<p class="newsletter_text">Esteem spirit temper too say adieus who direct esteem esteems luckily.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="copy-right_text">
+			<div class="container">
+				<div class="footer_border"></div>
+				<div class="row">
+					<div class="col-xl-12">
+						<p class="copy_right text-center">
+
+							Copyright &copy;<script data-cfasync="false" src="~/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com/" target="_blank">Colorlib</a>
+
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+
+	<script src="~/cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="~/codepen.io/assets/common/stopExecutionOnTimeout-de7e2ef6bfefd24b79a3f68b414b87b8db5b08439cac3f1012092b2290c719cd.html"></script>
+	<script src="~/cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+	<script src="~/js/vendor%2c_modernizr-3.5.0.min.js%2bpopper.min.js%2bbootstrap.min.js.pagespeed.jc.Njom7XZQCw.js"></script>
+
+	<script>eval(mod_pagespeed_LjGfkCZa_N);</script>
+
+	<script>eval(mod_pagespeed_r7HzYzM9It);</script>
+	<script>eval(mod_pagespeed_tuVYjtVCha);</script>
+	<script src="~/js/owl.carousel.min.js%2bisotope.pkgd.min.js%2bajax-form.js%2bwaypoints.min.js%2bjquery.counterup.min.js.pagespeed.jc.gNDHCmz6gl.js"></script>
+
+	<script>eval(mod_pagespeed_wF8O_NMV0B);</script>
+	<script>eval(mod_pagespeed__vp80u2iAv);</script>
+	<script>eval(mod_pagespeed_ZffEvHkJz8);</script>
+	<script>eval(mod_pagespeed_TFbPeOH6AV);</script>
+	<script>eval(mod_pagespeed_UQ3IfSzm6P);</script>
+	<script src="~/js/imagesloaded.pkgd.min.js%2bscrollIt.js%2bjquery.scrollUp.min.js%2bwow.min.js%2bnice-select.min.js%2bjquery.slicknav.min.js%2bjquery.magnific-popup.min.js%2bplugins.js.pagespeed.jc.W2RtO"></script>
+
+	<script>eval(mod_pagespeed_Llpmyp97AH);</script>
+	<script>eval(mod_pagespeed_nKMIN1ycec);</script>
+	<script>eval(mod_pagespeed_6hzVaRvkJb);</script>
+	<script>eval(mod_pagespeed_HJ8ZYAmdzl);</script>
+	<script>eval(mod_pagespeed_iFH$TfP9us);</script>
+	<script>eval(mod_pagespeed_MNLyM9b9wR);</script>
+	<script>eval(mod_pagespeed_r0zAhSS9WQ);</script>
+	<script>eval(mod_pagespeed_Qe1eTvxZIN);</script>
+
+	<script src="~/js/slick.min.js%2bcontact.js%2bjquery.ajaxchimp.min.js%2bjquery.form.js.pagespeed.jc.mrghlsPHNj.js"></script>
+
+	<script>eval(mod_pagespeed_c0zbgHKU9k);</script>
+
+	<script>eval(mod_pagespeed_tdpQAP7_ce);</script>
+	<script>eval(mod_pagespeed_g10f1SqnB0);</script>
+	<script>eval(mod_pagespeed_WTocSxHQ5y);</script>
+	<script src="~/js/jquery.validate.min.js%2bmail-script.js%2bmain.js.pagespeed.jc.37Tw3ig88D.js"></script>
+
+	<script>eval(mod_pagespeed_EmuilT7kFN);</script>
+	<script>eval(mod_pagespeed_dibCFVplHU);</script>
+	<script>eval(mod_pagespeed_3k7GGDVr4q);</script>
+	<script>
+		function collision($div1, $div2) {
+			var x1 = $div1.offset().left;
+			var w1 = 40;
+			var r1 = x1 + w1;
+			var x2 = $div2.offset().left;
+			var w2 = 40;
+			var r2 = x2 + w2;
+
+			if (r1 < x2 || x1 > r2)
+				return false;
+			return true;
+		}
+		// Fetch Url value
+		var getQueryString = function(parameter) {
+			var href = window.location.href;
+			var reg = new RegExp('[?&]' + parameter + '=([^&#]*)', 'i');
+			var string = reg.exec(href);
+			return string ? string[1] : null;
+		};
+		// End url
+		// // slider call
+		$('#slider').slider({
+			range: true,
+			min: 20,
+			max: 200,
+			step: 1,
+			values: [getQueryString('minval') ? getQueryString('minval') : 20, getQueryString('maxval') ?
+				getQueryString('maxval') : 200
+			],
+
+			slide: function(event, ui) {
+
+				$('.ui-slider-handle:eq(0) .price-range-min').html(ui.values[0] + 'K');
+				$('.ui-slider-handle:eq(1) .price-range-max').html(ui.values[1] + 'K');
+				$('.price-range-both').html('<i>K' + ui.values[0] + ' - </i>K' + ui.values[1]);
+
+				// get values of min and max
+				$("#minval").val(ui.values[0]);
+				$("#maxval").val(ui.values[1]);
+
+				if (ui.values[0] == ui.values[1]) {
+					$('.price-range-both i').css('display', 'none');
+				} else {
+					$('.price-range-both i').css('display', 'inline');
+				}
+
+				if (collision($('.price-range-min'), $('.price-range-max')) == true) {
+					$('.price-range-min, .price-range-max').css('opacity', '0');
+					$('.price-range-both').css('display', 'block');
+				} else {
+					$('.price-range-min, .price-range-max').css('opacity', '1');
+					$('.price-range-both').css('display', 'none');
+				}
+
+			}
+		});
+
+		$('.ui-slider-range').append('<span class="price-range-both value"><i>' + $('#slider').slider('values', 0) +
+			' - </i>' + $('#slider').slider('values', 1) + '</span>');
+
+		$('.ui-slider-handle:eq(0)').append('<span class="price-range-min value">' + $('#slider').slider('values', 0) +
+			'k</span>');
+
+		$('.ui-slider-handle:eq(1)').append('<span class="price-range-max value">' + $('#slider').slider('values', 1) +
+			'k</span>');
+	</script>
+
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+
+		gtag('config', 'UA-23581568-13');
+	</script>
+	@await RenderSectionAsync("Scripts", required: false)
+	<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"72d2efa3abc794d7","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.6.0","si":100}' crossorigin="anonymous"></script>
+
 </body>
+
+<!-- Mirrored from preview.colorlib.com/theme/realestate2/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 19 Jul 2022 10:57:43 GMT -->
 </html>

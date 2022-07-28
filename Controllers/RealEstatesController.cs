@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Zillow.Models;
 
 namespace Zillow.Controllers
 {
+    [Authorize]
     public class RealEstatesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,13 +22,56 @@ namespace Zillow.Controllers
         }
 
         // GET: RealEstates
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, int location, int property, int page = 1)
         {
-            var applicationDbContext = _context.RealEstate.Include(r => r.Address).Include(r => r.Category);
-            return View(await applicationDbContext.ToListAsync());
+            var adds = new SelectList(_context.Address, "Id", "City");
+            adds.Append(new SelectListItem { Text = "None", Value = "0" });
+            ViewData["AddressId"] = adds;
+            var cats = new SelectList(_context.Category, "Id", "Name");
+            cats.Append(new SelectListItem { Text = "None", Value = "0" });
+            ViewData["CategoryId"] = cats;
+
+            var estates = from s in _context.RealEstate.Include(r => r.Address).Include(r => r.Category)
+                            select s;
+
+            var estatesList = estates.ToList();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                //movies = movies.Where(s => s.Title!.Contains(searchString));
+                estatesList = estatesList.FindAll(m => m.Name!.Contains(searchString));
+            }
+
+            if (location > 0)
+            {
+                estatesList = estatesList.FindAll(m => m.Address.Id == location);
+            }
+
+            if (property > 0)
+            {
+                estatesList = estatesList.FindAll(m => m.Category.Id == property);
+            }
+
+            const int pageSize = 3;
+            if(page < 1)
+            {
+                page = 1;
+            }
+
+            int estateCount = _context.RealEstate.Count();
+            var pager = new Pager(estateCount, page, pageSize);
+
+            int estateSkip = (page - 1) * pageSize;
+
+            var data = estatesList.Skip(estateSkip).Take(pager.PageSize).ToList();
+
+            this.ViewBag.Pager = pager;
+            ViewData["images"] = _context.Image.Include(i => i.RealEstate);
+            return View(data);
         }
 
         // GET: RealEstates/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.RealEstate == null)
@@ -43,10 +88,13 @@ namespace Zillow.Controllers
                 return NotFound();
             }
 
+            ViewData["Images"] = _context.Image.ToList().FindAll(x => x.RealEstateId == id);
+
             return View(realEstate);
         }
 
         // GET: RealEstates/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["AddressId"] = new SelectList(_context.Address, "Id", "City");
@@ -59,6 +107,7 @@ namespace Zillow.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([Bind("Id,Name,Desc,AddressId,CategoryId")] RealEstate realEstate)
         {
             if (ModelState.IsValid)
@@ -73,6 +122,7 @@ namespace Zillow.Controllers
         }
 
         // GET: RealEstates/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.RealEstate == null)
@@ -95,6 +145,7 @@ namespace Zillow.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Desc,AddressId,CategoryId")] RealEstate realEstate)
         {
             if (id != realEstate.Id)
@@ -128,6 +179,7 @@ namespace Zillow.Controllers
         }
 
         // GET: RealEstates/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.RealEstate == null)
@@ -150,6 +202,7 @@ namespace Zillow.Controllers
         // POST: RealEstates/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.RealEstate == null)

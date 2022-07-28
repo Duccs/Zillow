@@ -1,53 +1,58 @@
 ﻿@model IEnumerable<Zillow.Models.Contract>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Contracts";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Customer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RealEstate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RealEstate.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="bradcam_area bradcam_bg_1">
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="bradcam_text text-center">
+					<h3>Contracts</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<section class="sample-text-area">
+<div class="container box_1170">
+<div class="section-top-border">
+	<p>
+		<a class="genric-btn primary circle" asp-action="Create">Create New</a>
+        <form asp-controller="Contracts" asp-action="Index" method="get" class="d-flex">
+            <p>
+                <input type="text" name="searchString" placeholder="Search" class="form-control me-sm-2"/>
+				<br />
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            </p>
+        </form>
+	</p>
+	<div class="progress-table-wrap">
+		<div class="progress-table">
+			<div class="table-head">
+				<div class="serial">@Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.TypeSortParm})</div>
+				<div class="country">@Html.ActionLink("Price", "Index", new { sortOrder = ViewBag.PriceSortParm})</div>
+				<div class="country">@Html.ActionLink("Customer", "Index", new { sortOrder = ViewBag.CustomerSortParm})</div>
+				<div class="country">@Html.ActionLink("Estate", "Index", new { sortOrder = ViewBag.EstateSortParm})</div>
+				<div class="country">Actions</div>
+			</div>
+			@foreach (var item in Model)
+			{
+			<div class="table-row">
+				<div class="serial">@item.Type</div>
+				<div class="country">@item.Price</div>
+				<div class="country">@item.Customer.Name</div>
+				<div class="country">@item.RealEstate.Name</div>
+				<div class="Actions">
+					<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+					<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+					<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+				</div>
+			</div>
+			}
+		</div>
+	</div>
+</div>
+</div>
+</section>

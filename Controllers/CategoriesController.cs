@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Zillow.Models;
 
 namespace Zillow.Controllers
 {
+    [Authorize]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,11 +22,34 @@ namespace Zillow.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-              return _context.Category != null ? 
-                          View(await _context.Category.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Category'  is null.");
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            var categories = from s in _context.Category
+                            select s;
+
+            switch (sortOrder)
+            {
+                case "country_desc":
+                    categories = categories.OrderByDescending(s => s.Name);
+                    break;
+                default:
+                    categories = categories.OrderBy(s => s.Name);
+                    break;
+            }
+            var category = categories.ToList();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                //movies = movies.Where(s => s.Title!.Contains(searchString));
+                category = category.FindAll(m => m.Name!.Contains(searchString));
+
+            }
+
+            return _context.Address != null ?
+                          View(category) :
+                          Problem("Entity set 'ApplicationDbContext.Address'  is null.");
         }
 
         // GET: Categories/Details/5
@@ -119,6 +144,7 @@ namespace Zillow.Controllers
         }
 
         // GET: Categories/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Category == null)
@@ -139,6 +165,7 @@ namespace Zillow.Controllers
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Category == null)

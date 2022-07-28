@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Zillow.Models;
 
 namespace Zillow.Controllers
 {
+    [Authorize]
     public class ContractsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,10 +22,54 @@ namespace Zillow.Controllers
         }
 
         // GET: Contracts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            var applicationDbContext = _context.Contract.Include(c => c.Customer).Include(c => c.RealEstate);
-            return View(await applicationDbContext.ToListAsync());
+            ViewBag.TypeSortParm = String.IsNullOrEmpty(sortOrder) ? "type_desc" : "";
+            ViewBag.PriceSortParm = sortOrder == "Price" ? "price_desc" : "Price";
+            ViewBag.CustomerSortParm = sortOrder == "Customer" ? "customer_desc" : "Customer";
+            ViewBag.EstateSortParm = sortOrder == "Estate" ? "estate_desc" : "Estate";
+
+            var contracts = from s in _context.Contract.Include(c => c.Customer).Include(c => c.RealEstate)
+                            select s;
+
+            switch (sortOrder)
+            {
+                case "type_desc":
+                    contracts = contracts.OrderByDescending(s => s.Type);
+                    break;
+                case "Price":
+                    contracts = contracts.OrderBy(s => s.Price);
+                    break;
+                case "price_desc":
+                    contracts = contracts.OrderByDescending(s => s.Price);
+                    break;
+                case "Customer":
+                    contracts = contracts.OrderBy(s => s.Customer.Name);
+                    break;
+                case "customer_desc":
+                    contracts = contracts.OrderByDescending(s => s.Customer.Name);
+                    break;
+                case "Estate":
+                    contracts = contracts.OrderBy(s => s.RealEstate.Name);
+                    break;
+                case "estate_desc":
+                    contracts = contracts.OrderByDescending(s => s.RealEstate.Name);
+                    break;
+                default:
+                    contracts = contracts.OrderBy(s => s.Type);
+                    break;
+            }
+            var contract = contracts.ToList();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                //movies = movies.Where(s => s.Title!.Contains(searchString));
+                contract = contract.FindAll(m => m.Customer.Name!.Contains(searchString) || m.RealEstate.Name!.Contains(searchString));
+            }
+
+            return _context.Address != null ?
+                          View(contract) :
+                          Problem("Entity set 'ApplicationDbContext.Address'  is null.");
         }
 
         // GET: Contracts/Details/5
@@ -128,6 +174,7 @@ namespace Zillow.Controllers
         }
 
         // GET: Contracts/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Contract == null)
@@ -150,6 +197,7 @@ namespace Zillow.Controllers
         // POST: Contracts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Contract == null)

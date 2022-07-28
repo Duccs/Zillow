@@ -1,41 +1,56 @@
 ﻿@model IEnumerable<Zillow.Models.Address>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Addresses";
 }
 
-<h1>Index</h1>
+<div class="bradcam_area bradcam_bg_1">
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="bradcam_text text-center">
+					<h3>Addresses</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Country)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Country)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<section class="sample-text-area">
+<div class="container box_1170">
+<div class="section-top-border">
+
+	<p>
+		<a class="genric-btn primary circle" asp-action="Create">Create New</a>
+        <form asp-controller="Addresses" asp-action="Index" method="get" class="d-flex">
+            <p>
+                <input type="text" name="searchString" placeholder="Search" class="form-control me-sm-2"/>
+				<br />
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            </p>
+        </form>
+	</p>
+	<div class="progress-table-wrap">
+		<div class="progress-table">
+			<div class="table-head">
+				<div class="serial">@Html.ActionLink("Country", "Index", new { sortOrder = ViewBag.CountrySortParm})</div>
+				<div class="country">@Html.ActionLink("City", "Index", new { sortOrder = ViewBag.CitySortParm})</div>
+				<div class="country">Actions</div>
+			</div>
+			@foreach (var item in Model)
+			{
+			<div class="table-row">
+				<div class="serial">@item.Country</div>
+				<div class="country">@item.City</div>
+				<div class="Actions">
+					<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+					<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+					<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+				</div>
+			</div>
+			}
+		</div>
+	</div>
+</div>
+</div>
+</section>

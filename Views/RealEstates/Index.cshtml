@@ -1,53 +1,160 @@
 ﻿@model IEnumerable<Zillow.Models.RealEstate>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
+
+	Pager pager = new Pager();
+
+	int pageNo = 0;
+
+	if(ViewBag.Pager != null)
+	{
+		pager = ViewBag.Pager;
+		pageNo = pager.CurrentPage;
+	}
 }
 
-<h1>Index</h1>
+<div class="slider_area">
+	<div class="single_slider single_slider2  d-flex align-items-center property_bg overlay2">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-xl-10 offset-xl-1">
+					<div class="property_wrap">
+						<div class="slider_text text-center justify-content-center">
+							<h3>Search property</h3>
+						</div>
+						<div class="property_form">
+							<form asp-controller="RealEstates" asp-action="Index" method="get">
+								<div class="row">
+									<div class="col-xl-12">
+										<div class="form_wrap d-flex">
+											<div class="single-field max_width ">
+												<label for="#">Location</label>
+												<select name="location" class="wide" asp-items="ViewBag.AddressId"></select>
+											</div>
+											<div class="single-field max_width ">
+												<label for="#">Property type</label>
+												<select name="property" class="wide" asp-items="ViewBag.CategoryId"></select>
+											</div>
+											<input type="text" name="searchString" placeholder="Search" class="form-control" style="width:30%; margin-right:30px;"/>
+											<div class="single-field min_width ">
+												<label for="#">Bed Room</label>
+												<select class="wide">
+													<option data-display="01">01</option>
+													<option value="1">02</option>
+													<option value="2">03</option>
+												</select>
+											</div>
+											<div class="single-field min_width ">
+												<label for="#">Bath Room</label>
+												<select class="wide">
+													<option data-display="01">01</option>
+													<option value="1">02</option>
+													<option value="2">03</option>
+												</select>
+											</div>
+											<div class="serach_icon">
+												<button class="btn btn-secondary my-2 my-sm-0" type="submit">
+													<i class="ti-search"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Desc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Desc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="popular_property plus_padding">
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="section_title mb-40 text-center">
+					<h4>@Model.Count() Properties found</h4>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+
+			@{
+				var images = (IQueryable<Image>)ViewData["images"];
+			}
+			@foreach (var item in Model)
+			{
+				<div class="col-xl-4 col-md-6 col-lg-4">
+					<div class="single_property">
+						<div class="property_thumb">
+							<div class="property_tag">
+								@Html.DisplayFor(modelItem => item.Category.Name)
+							</div>
+							<img src="~/imgs/@images.FirstOrDefault(v => v.RealEstateId == item.Id).ImagePath" alt="">
+						</div>
+						<div class="property_content">
+							<div class="main_pro">
+								<h3><a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></h3>
+								<div class="mark_pro">
+									<img src="~/img/svg_icon/location.svg" alt="">
+									<span>@Html.DisplayFor(modelItem => item.Address.City)</span>
+								</div>
+								<span class="amount">From $20k</span>
+							</div>
+						</div>
+						<div class="footer_pro">
+							<ul>
+								<li>
+									<div class="single_info_doc">
+										<img src="~/img/svg_icon/square.svg" alt="">
+										<span>1200 Sqft</span>
+									</div>
+								</li>
+								<li>
+									<div class="single_info_doc">
+										<img src="~/img/svg_icon/bed.svg" alt="">
+										<span>2 Bed</span>
+									</div>
+								</li>
+								<li>
+									<div class="single_info_doc">
+										<img src="~/img/svg_icon/bath.svg" alt="">
+										<span>2 Bath</span>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="more_property_btn text-center">
+					<partial name="_Pager" model="@pager" />
+					<a href="#" class="boxed-btn3-line">More Properties</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="contact_action_area">
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-7">
+				<div class="action_heading">
+					<h3>Add your property for sale</h3>
+				</div>
+			</div>
+			<div class="col-xl-5">
+				<div class="call_add_action">
+					<span>+10 637 367 4567</span>
+					<a asp-action="Create" class="boxed-btn3-line">Create New</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

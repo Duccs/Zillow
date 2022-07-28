@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Zillow.Models;
 
 namespace Zillow.Controllers
 {
+    [Authorize]
     public class AddressesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,10 +22,40 @@ namespace Zillow.Controllers
         }
 
         // GET: Addresses
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-              return _context.Address != null ? 
-                          View(await _context.Address.ToListAsync()) :
+            ViewBag.CountrySortParm = String.IsNullOrEmpty(sortOrder) ? "country_desc" : "";
+            ViewBag.CitySortParm = sortOrder == "City" ? "city_desc" : "City";
+
+            var addresses = from s in _context.Address
+                          select s;
+
+            switch (sortOrder)
+            {
+                case "country_desc":
+                    addresses = addresses.OrderByDescending(s => s.Country);
+                    break;
+                case "City":
+                    addresses = addresses.OrderBy(s => s.City);
+                    break;
+                case "city_desc":
+                    addresses = addresses.OrderByDescending(s => s.City);
+                    break;
+                default:
+                    addresses = addresses.OrderBy(s => s.Country);
+                    break;
+            }
+            var address = addresses.ToList();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                //movies = movies.Where(s => s.Title!.Contains(searchString));
+                address = address.FindAll(m => m.City!.Contains(searchString) || m.Country!.Contains(searchString));
+
+            }
+
+            return _context.Address != null ? 
+                          View(address) :
                           Problem("Entity set 'ApplicationDbContext.Address'  is null.");
         }
 

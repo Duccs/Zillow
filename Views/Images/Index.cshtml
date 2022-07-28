@@ -1,47 +1,86 @@
 ﻿@model IEnumerable<Zillow.Models.Image>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Images";
 }
 
-<h1>Index</h1>
+<div class="bradcam_area bradcam_bg_1">
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="bradcam_text text-center">
+					<h3>Images</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Image
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImagePath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RealEstate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <img src="~/imgs/@Html.DisplayFor(modelItem => item.ImagePath)" alt="@Html.DisplayFor(modelItem => item.ImagePath)">
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImagePath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RealEstate.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="popular_property plus_padding">
+	<div class="container">
+		<div class="row">
+			@foreach (var item in Model)
+			{
+				<div class="col-xl-4 col-md-6 col-lg-4">
+					<div class="single_property">
+						<div class="property_thumb">
+							<img src="~/imgs/@item.ImagePath" alt="">
+						</div>
+						<div class="property_content">
+							<div class="main_pro">
+								<h3><a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ImagePath)</a></h3>
+								<div class="mark_pro">
+									<img src="~/img/svg_icon/location.svg" alt="">
+									<span><a asp-controller="RealEstates" asp-action="Details" asp-route-id="@item.RealEstate.Id	">@Html.DisplayFor(modelItem => item.RealEstate.Name)</a></span>
+								</div>
+							</div>
+						</div>
+						<div class="footer_pro">
+							<ul>
+								<li>
+									<div class="single_info_doc">
+										<span><a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i> Edit</a></span>
+									</div>
+								</li>
+								<li>
+									<div class="single_info_doc">
+										<span><a asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info"></i> Details</a> </span>
+									</div>
+								</li>
+								<li>
+									<div class="single_info_doc">
+										<span><a asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash-can"></i> Delete</a></span>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="more_property_btn text-center">
+					<a href="#" class="boxed-btn3-line">More Properties</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="contact_action_area">
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-7">
+				<div class="action_heading">
+					<h3>Add Images</h3>
+				</div>
+			</div>
+			<div class="col-xl-5">
+				<div class="call_add_action">
+					<a asp-action="Create" class="boxed-btn3-line">Create New</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

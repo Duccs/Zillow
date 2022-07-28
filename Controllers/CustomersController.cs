@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Zillow.Models;
 
 namespace Zillow.Controllers
 {
+    [Authorize]
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,10 +22,47 @@ namespace Zillow.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            var applicationDbContext = _context.Customer.Include(c => c.Address);
-            return View(await applicationDbContext.ToListAsync());
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.AddressSortParm = sortOrder == "Address" ? "address_desc" : "Address";
+            ViewBag.PhoneSortParm = sortOrder == "Phone" ? "phone_desc" : "Phone";
+
+            var customers = from s in _context.Customer.Include(c => c.Address)
+                            select s;
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    customers = customers.OrderByDescending(s => s.Name);
+                    break;
+                case "Address":
+                    customers = customers.OrderBy(s => s.Address.City);
+                    break;
+                case "address_desc":
+                    customers = customers.OrderByDescending(s => s.Address.City);
+                    break;
+                case "Phone":
+                    customers = customers.OrderBy(s => s.Phone);
+                    break;
+                case "phone_desc":
+                    customers = customers.OrderByDescending(s => s.Phone);
+                    break;
+                default:
+                    customers = customers.OrderBy(s => s.Name);
+                    break;
+            }
+            var customer = customers.ToList();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                //movies = movies.Where(s => s.Title!.Contains(searchString));
+                customer = customer.FindAll(m => m.Name!.Contains(searchString) || m.Address.City!.Contains(searchString));
+            }
+
+            return _context.Address != null ?
+                          View(customer) :
+                          Problem("Entity set 'ApplicationDbContext.Address'  is null.");
         }
 
         // GET: Customers/Details/5
@@ -122,6 +161,7 @@ namespace Zillow.Controllers
         }
 
         // GET: Customers/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Customer == null)
@@ -141,6 +181,7 @@ namespace Zillow.Controllers
         // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Customer == null)
