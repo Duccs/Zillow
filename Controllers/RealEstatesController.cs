@@ -24,12 +24,8 @@ namespace Zillow.Controllers
         // GET: RealEstates
         public async Task<IActionResult> Index(string searchString, int location, int property, int page = 1)
         {
-            var adds = new SelectList(_context.Address, "Id", "City");
-            adds.Append(new SelectListItem { Text = "None", Value = "0" });
-            ViewData["AddressId"] = adds;
-            var cats = new SelectList(_context.Category, "Id", "Name");
-            cats.Append(new SelectListItem { Text = "None", Value = "0" });
-            ViewData["CategoryId"] = cats;
+            ViewData["AddressId"] = new SelectList(_context.Address, "Id", "City");
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
 
             var estates = from s in _context.RealEstate.Include(r => r.Address).Include(r => r.Category)
                             select s;
@@ -52,13 +48,13 @@ namespace Zillow.Controllers
                 estatesList = estatesList.FindAll(m => m.Category.Id == property);
             }
 
-            const int pageSize = 3;
+            const int pageSize = 6;
             if(page < 1)
             {
                 page = 1;
             }
 
-            int estateCount = _context.RealEstate.Count();
+            int estateCount = estatesList.Count();
             var pager = new Pager(estateCount, page, pageSize);
 
             int estateSkip = (page - 1) * pageSize;

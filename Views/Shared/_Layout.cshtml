@@ -14,7 +14,7 @@
 
 	<link rel="shortcut icon" type="image/x-icon" href="~/img/xfavicon.png.pagespeed.ic.xjuSQ5i6l5.png">
 	<link rel="stylesheet" href="~/css/bootstrap.min.css%2bowl.carousel.min.css%2bmagnific-popup.css%2bfont-awesome.min.css%2bthemify-icons.css%2bnice-select.css%2bflaticon.css%2bgijgo.css%2banimate.css%2bslick.css%2bslicknav.css" />
-	<link rel="stylesheet" href="~/../../../ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="~/ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
 	<link rel="stylesheet" href="~/css/A.style.css.pagespeed.cf.D2wU09WNeF.css">
 	<link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
 
@@ -42,13 +42,13 @@
 								</div>
 								<div class="social_media_links">
 									<a href="https://github.com/Duccs">
-										<i class="fa fa-linkedin"></i>
+										<i class="fa-brands fa-linkedin"></i>
 									</a>
 									<a href="https://github.com/Duccs">
-										<i class="fa fa-facebook"></i>
+										<i class="fa-brands fa-facebook"></i>
 									</a>
 									<a href="https://github.com/Duccs">
-										<i class="fa fa-google-plus"></i>
+										<i class="fa-brands fa-google-plus"></i>
 									</a>
 								</div>
 							</div>
@@ -106,12 +106,16 @@
 
 									@if (SignInManager.IsSignedIn(User))
 									{
-										<div class="book_btn d-none d-lg-block" style="margin-right: 3px">
-											<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+										<div class="" style="color:white; margin-right: 3px">
+											Hello @User.Identity?.Name!
 										</div>
-										<form  asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-											<div class="book_btn d-none d-lg-block">
-												<button type="submit" class="nav-link text-dark">Logout</button>
+										<form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+											<div class="book_btn d-none d-lg-block" >
+												<button type="submit" class="nav-link text-dark" style="background: linear-gradient(to bottom,#fdae5c 0%,#fd8e5e 100%);padding: 13px 26px;
+												font-size: 14px;
+												font-weight: 400;
+												border: 1px solid transparent;
+												color: #fff; border-radius: 30px;">Logout</button>
 											</div>
 										</form>
 									}
@@ -124,7 +128,7 @@
 											<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
 										</div>
 									}
-									
+
 								</div>
 							</div>
 							<div class="col-12">
@@ -243,116 +247,15 @@
 
 	<script src="~/js/vendor%2c_modernizr-3.5.0.min.js%2bpopper.min.js%2bbootstrap.min.js.pagespeed.jc.Njom7XZQCw.js"></script>
 
-	<script>eval(mod_pagespeed_LjGfkCZa_N);</script>
-
-	<script>eval(mod_pagespeed_r7HzYzM9It);</script>
-	<script>eval(mod_pagespeed_tuVYjtVCha);</script>
 	<script src="~/js/owl.carousel.min.js%2bisotope.pkgd.min.js%2bajax-form.js%2bwaypoints.min.js%2bjquery.counterup.min.js.pagespeed.jc.gNDHCmz6gl.js"></script>
 
-	<script>eval(mod_pagespeed_wF8O_NMV0B);</script>
-	<script>eval(mod_pagespeed__vp80u2iAv);</script>
-	<script>eval(mod_pagespeed_ZffEvHkJz8);</script>
-	<script>eval(mod_pagespeed_TFbPeOH6AV);</script>
-	<script>eval(mod_pagespeed_UQ3IfSzm6P);</script>
 	<script src="~/js/imagesloaded.pkgd.min.js%2bscrollIt.js%2bjquery.scrollUp.min.js%2bwow.min.js%2bnice-select.min.js%2bjquery.slicknav.min.js%2bjquery.magnific-popup.min.js%2bplugins.js.pagespeed.jc.W2RtO"></script>
-
-	<script>eval(mod_pagespeed_Llpmyp97AH);</script>
-	<script>eval(mod_pagespeed_nKMIN1ycec);</script>
-	<script>eval(mod_pagespeed_6hzVaRvkJb);</script>
-	<script>eval(mod_pagespeed_HJ8ZYAmdzl);</script>
-	<script>eval(mod_pagespeed_iFH$TfP9us);</script>
-	<script>eval(mod_pagespeed_MNLyM9b9wR);</script>
-	<script>eval(mod_pagespeed_r0zAhSS9WQ);</script>
-	<script>eval(mod_pagespeed_Qe1eTvxZIN);</script>
 
 	<script src="~/js/slick.min.js%2bcontact.js%2bjquery.ajaxchimp.min.js%2bjquery.form.js.pagespeed.jc.mrghlsPHNj.js"></script>
 
-	<script>eval(mod_pagespeed_c0zbgHKU9k);</script>
-
-	<script>eval(mod_pagespeed_tdpQAP7_ce);</script>
-	<script>eval(mod_pagespeed_g10f1SqnB0);</script>
-	<script>eval(mod_pagespeed_WTocSxHQ5y);</script>
 	<script src="~/js/jquery.validate.min.js%2bmail-script.js%2bmain.js.pagespeed.jc.37Tw3ig88D.js"></script>
 
-	<script>eval(mod_pagespeed_EmuilT7kFN);</script>
-	<script>eval(mod_pagespeed_dibCFVplHU);</script>
-	<script>eval(mod_pagespeed_3k7GGDVr4q);</script>
-	<script>
-		function collision($div1, $div2) {
-			var x1 = $div1.offset().left;
-			var w1 = 40;
-			var r1 = x1 + w1;
-			var x2 = $div2.offset().left;
-			var w2 = 40;
-			var r2 = x2 + w2;
-
-			if (r1 < x2 || x1 > r2)
-				return false;
-			return true;
-		}
-		// Fetch Url value
-		var getQueryString = function(parameter) {
-			var href = window.location.href;
-			var reg = new RegExp('[?&]' + parameter + '=([^&#]*)', 'i');
-			var string = reg.exec(href);
-			return string ? string[1] : null;
-		};
-		// End url
-		// // slider call
-		$('#slider').slider({
-			range: true,
-			min: 20,
-			max: 200,
-			step: 1,
-			values: [getQueryString('minval') ? getQueryString('minval') : 20, getQueryString('maxval') ?
-				getQueryString('maxval') : 200
-			],
-
-			slide: function(event, ui) {
-
-				$('.ui-slider-handle:eq(0) .price-range-min').html(ui.values[0] + 'K');
-				$('.ui-slider-handle:eq(1) .price-range-max').html(ui.values[1] + 'K');
-				$('.price-range-both').html('<i>K' + ui.values[0] + ' - </i>K' + ui.values[1]);
-
-				// get values of min and max
-				$("#minval").val(ui.values[0]);
-				$("#maxval").val(ui.values[1]);
-
-				if (ui.values[0] == ui.values[1]) {
-					$('.price-range-both i').css('display', 'none');
-				} else {
-					$('.price-range-both i').css('display', 'inline');
-				}
-
-				if (collision($('.price-range-min'), $('.price-range-max')) == true) {
-					$('.price-range-min, .price-range-max').css('opacity', '0');
-					$('.price-range-both').css('display', 'block');
-				} else {
-					$('.price-range-min, .price-range-max').css('opacity', '1');
-					$('.price-range-both').css('display', 'none');
-				}
-
-			}
-		});
-
-		$('.ui-slider-range').append('<span class="price-range-both value"><i>' + $('#slider').slider('values', 0) +
-			' - </i>' + $('#slider').slider('values', 1) + '</span>');
-
-		$('.ui-slider-handle:eq(0)').append('<span class="price-range-min value">' + $('#slider').slider('values', 0) +
-			'k</span>');
-
-		$('.ui-slider-handle:eq(1)').append('<span class="price-range-max value">' + $('#slider').slider('values', 1) +
-			'k</span>');
-	</script>
-
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag() { dataLayer.push(arguments); }
-		gtag('js', new Date());
-
-		gtag('config', 'UA-23581568-13');
-	</script>
 	@await RenderSectionAsync("Scripts", required: false)
 	<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"72d2efa3abc794d7","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.6.0","si":100}' crossorigin="anonymous"></script>
 

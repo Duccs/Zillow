@@ -30,13 +30,13 @@
 										<div class="form_wrap d-flex">
 											<div class="single-field max_width ">
 												<label for="#">Location</label>
-												<select name="location" class="wide" asp-items="ViewBag.AddressId"></select>
+												@Html.DropDownList("location", (IEnumerable<SelectListItem>)ViewBag.AddressId, "-- Select One --")
 											</div>
 											<div class="single-field max_width ">
 												<label for="#">Property type</label>
-												<select name="property" class="wide" asp-items="ViewBag.CategoryId"></select>
+												@Html.DropDownList("property", (IEnumerable<SelectListItem>)ViewBag.CategoryId, "-- Select One --")
 											</div>
-											<input type="text" name="searchString" placeholder="Search" class="form-control" style="width:30%; margin-right:30px;"/>
+											<input type="text" name="searchString" placeholder="Search" class="form-control" style="width:40%; margin-right:30px; height:50px; margin-top:20px"/>
 											<div class="single-field min_width ">
 												<label for="#">Bed Room</label>
 												<select class="wide">

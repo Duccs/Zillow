@@ -80,6 +80,7 @@ namespace Zillow.Controllers
         }
 
         // GET: Images/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Image == null)
@@ -101,6 +102,7 @@ namespace Zillow.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, Image image)
         {
             if (id != image.Id)

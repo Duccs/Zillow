@@ -108,6 +108,7 @@ namespace Zillow.Controllers
         }
 
         // GET: Customers/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Customer == null)
@@ -129,6 +130,7 @@ namespace Zillow.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,AddressId,Phone")] Customer customer)
         {
             if (id != customer.Id)

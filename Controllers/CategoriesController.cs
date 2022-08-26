@@ -93,6 +93,7 @@ namespace Zillow.Controllers
         }
 
         // GET: Categories/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Category == null)
@@ -113,6 +114,7 @@ namespace Zillow.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Desc")] Category category)
         {
             if (id != category.Id)
